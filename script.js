@@ -1,14 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Map Initialization
-    const map = L.map("map").setView([12.5657, 104.991], 7); // Centered on Cambodia
+    // ========== CONFIGURATION ==========
+    const weatherApiKey = '2a2fdfcc250a438e1f60e0bfce8e0231';
+    const defaultMapCenter = [12.5657, 104.991]; // Center of Cambodia
+    const defaultZoom = 7;
+
+    // ========== MAP INITIALIZATION ==========
+    const map = L.map("map").setView(defaultMapCenter, defaultZoom);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 18,
-      attribution: 'Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 18,
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
-  
-    // Attractions Data
+
+    // ========== PROVINCE DATA ==========
     const provinces = {
-      "Phnom Penh": {
+        "Phnom Penh": {
         coords: [11.5564, 104.9282],
         attractions: [
           { "name": "Royal Palace & Silver Pagoda", "description": "The residence of the Cambodian King.", "image": "royalpalace.jfif", "coords": [11.5564, 104.9282] },
@@ -256,91 +261,173 @@ document.addEventListener("DOMContentLoaded", function () {
               ],
         },
     };
-  
-    // Populate the dropdown with provinces
+
+    // ========== IMPROVED WEATHER FUNCTIONS ==========
+    async function fetchWeather(coords, provinceName) {
+        try {
+            // Verify coordinates are valid numbers
+            if (!Array.isArray(coords) || coords.some(isNaN)) {
+                throw new Error(`Invalid coordinates for ${provinceName}`);
+            }
+
+            const response = await fetch(
+                `https://api.openweathermap.org/data/2.5/weather?lat=${coords[0]}&lon=${coords[1]}&appid=${weatherApiKey}&units=metric`
+            );
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Weather API error');
+            }
+            
+            return await response.json();
+        } catch (error) {
+            console.error(`Weather fetch failed for ${provinceName}:`, error);
+            return null;
+        }
+    }
+
+    function displayWeather(data, provinceName) {
+        const weatherInfo = document.getElementById('weather-info');
+        
+        if (!data?.main) {
+            weatherInfo.innerHTML = `
+                <div class="weather-error">
+                    <i class="fas fa-cloud-slash"></i>
+                    <p>Weather data unavailable for ${provinceName}</p>
+                    <small>Try refreshing or selecting another province</small>
+                </div>`;
+            return;
+        }
+
+        const iconUrl = `https://openweathermap.org/img/wn/${data.weather[0]?.icon || '01d'}@2x.png`;
+        weatherInfo.innerHTML = `
+            <div class="weather-card" data-condition="${data.weather[0]?.main?.toLowerCase() || 'clear'}">
+                <h3><i class="fas fa-map-marker-alt"></i> ${provinceName}</h3>
+                <div class="weather-content">
+                    <img src="${iconUrl}" alt="${data.weather[0]?.description || 'clear sky'}" class="weather-icon">
+                    <div class="weather-details">
+                        <p class="temperature">${Math.round(data.main.temp)}°C</p>
+                        <p class="conditions">${(data.weather[0]?.description || 'clear sky').toUpperCase()}</p>
+                        <div class="weather-stats">
+                            <p><i class="fas fa-temperature-low"></i> Feels: ${Math.round(data.main.feels_like)}°C</p>
+                            <p><i class="fas fa-tint"></i> Humidity: ${data.main.humidity}%</p>
+                            <p><i class="fas fa-wind"></i> Wind: ${(data.wind.speed * 3.6).toFixed(1)} km/h</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    // ========== MAP FUNCTIONS ==========
+    function clearMapMarkers() {
+        map.eachLayer(layer => {
+            if (layer instanceof L.Marker) map.removeLayer(layer);
+        });
+    }
+
+    function addAttractionMarkers(attractions) {
+        attractions.forEach(attraction => {
+            const marker = L.marker(attraction.coords).addTo(map);
+            marker.bindPopup(`
+                <div class="map-popup">
+                    <h4>${attraction.name}</h4>
+                    <p>${attraction.description}</p>
+                    <img src="${attraction.image}" alt="${attraction.name}" 
+                         style="max-width: 200px; border-radius: 8px; margin-top: 10px;">
+                </div>
+            `);
+        });
+    }
+
+    // ========== PROVINCE SELECTION ==========
     const provinceSelect = document.getElementById("province-select");
-    Object.keys(provinces).forEach((province) => {
-      const option = document.createElement("option");
-      option.value = province;
-      option.textContent = province;
-      provinceSelect.appendChild(option);
+    
+    // Populate dropdown
+    Object.keys(provinces).sort().forEach(province => {
+        const option = document.createElement("option");
+        option.value = province;
+        option.textContent = province;
+        provinceSelect.appendChild(option);
     });
-  
-    // Add markers for attractions on the map
-    function addAttractionsToMap(province) {
-      const attractions = provinces[province].attractions;
-      attractions.forEach(attraction => {
-        const { name, description, coords, image } = attraction;
-        const marker = L.marker(coords).addTo(map);
-        marker.bindPopup(`
-          <b>${name}</b><br>
-          ${description}<br>
-          <img src="${image}" alt="${name}" style="width: 100px; height: auto;">
-        `);
-      });
-    }
-  
-    // Handle province selection
-    provinceSelect.addEventListener("change", function () {
-      const selectedProvince = provinceSelect.value;
-      if (selectedProvince) {
-        // Set the map view to the selected province's coordinates
-        const provinceCoords = provinces[selectedProvince].coords;
-        map.setView(provinceCoords, 12); // Zoom into the selected province
-  
-        // Clear existing markers (if any)
-        map.eachLayer(function (layer) {
-          if (layer instanceof L.Marker) {
-            map.removeLayer(layer);
-          }
-        });
-  
-        // Add markers for the attractions in the selected province
-        addAttractionsToMap(selectedProvince);
-      }
+
+    // Handle selection changes
+    provinceSelect.addEventListener("change", async function() {
+        const provinceName = this.value;
+        const weatherInfo = document.getElementById('weather-info');
+        
+        if (!provinceName) {
+            clearMapMarkers();
+            map.setView(defaultMapCenter, defaultZoom);
+            weatherInfo.innerHTML = '';
+            return;
+        }
+
+        const province = provinces[provinceName];
+        
+        // Update map
+        map.setView(province.coords, 11);
+        clearMapMarkers();
+        addAttractionMarkers(province.attractions);
+        
+        // Fetch weather with loading state
+        weatherInfo.innerHTML = `
+            <div class="weather-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading weather for ${provinceName}...</p>
+            </div>`;
+        
+        try {
+            const weatherData = await fetchWeather(province.coords, provinceName);
+            displayWeather(weatherData, provinceName);
+        } catch (error) {
+            weatherInfo.innerHTML = `
+                <div class="weather-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Failed to load weather for ${provinceName}</p>
+                    <small>${error.message || 'Please try again later'}</small>
+                </div>`;
+        }
     });
-  
-    document.addEventListener('DOMContentLoaded', function() {
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
-        const body = document.body;
-      
-        // Check for saved dark mode preference in localStorage
-        const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
-      
-        // Apply dark mode if previously enabled
-        if (isDarkMode) {
-          body.classList.add('dark-mode');
-          darkModeToggle.textContent = '☀️'; // Change to sun icon
-        }
-      
-        // Toggle dark mode on button click
-        darkModeToggle.addEventListener('click', function() {
-          body.classList.toggle('dark-mode');
-          const isDarkModeEnabled = body.classList.contains('dark-mode');
-      
-          // Save preference to localStorage
-          if (isDarkModeEnabled) {
-            localStorage.setItem('darkMode', 'enabled');
-            darkModeToggle.textContent = '☀️'; // Change to sun icon
-          } else {
-            localStorage.setItem('darkMode', 'disabled');
-            darkModeToggle.textContent = '🌙'; // Change to moon icon
-          }
-        });
-      });
-  
-    // Scroll Animations
-    const reveals = document.querySelectorAll(".reveal");
-    function revealElements() {
-      reveals.forEach((el) => {
-        const windowHeight = window.innerHeight;
-        const elementTop = el.getBoundingClientRect().top;
-        const revealPoint = 100;
-        if (elementTop < windowHeight - revealPoint) {
-          el.classList.add("active");
-        }
-      });
+
+    // ========== DARK MODE ==========
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const body = document.body;
+
+// Initialize dark mode from localStorage
+function initializeDarkMode() {
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    body.classList.toggle('dark-mode', isDarkMode);
+    updateDarkModeIcon(isDarkMode);
+}
+
+// Update the icon based on dark mode state
+function updateDarkModeIcon(isDarkMode) {
+    darkModeToggle.innerHTML = isDarkMode ? '☀️' : '🌙';
+}
+
+// Toggle handler
+darkModeToggle.addEventListener('click', () => {
+    const isDarkMode = !body.classList.contains('dark-mode');
+    body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', isDarkMode);
+    updateDarkModeIcon(isDarkMode);
+});
+
+// Initialize on page load
+initializeDarkMode();
+
+    // Toggle handler
+    darkModeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        const isDark = body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        darkModeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    });
+
+    // ========== INITIAL LOAD ==========
+    // Load Phnom Penh by default
+    if (provinces["Phnom Penh"]) {
+        provinceSelect.value = "Phnom Penh";
+        provinceSelect.dispatchEvent(new Event('change'));
     }
-    window.addEventListener("scroll", revealElements);
-    revealElements();
- });
+});
