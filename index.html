@@ -7,19 +7,15 @@
   <meta name="keywords" content="Cambodia, travel, culture, history, attractions, map">
   <meta property="og:title" content="Cambodia Explorer">
   <meta property="og:description" content="Explore the beauty of Cambodia. Discover rich culture, history, and breathtaking landscapes.">
-  <meta property="og:image" content="path_to_image.jpg">
+  <meta property="og:image" content="angkorwat.jpg">
   <meta property="og:url" content="https://yourwebsite.com">
   <title>Cambodia Explorer</title>
-  
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <script defer src="script.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-
   <header>
     <nav class="navbar">
       <div class="logo">🇰🇭 CAMBODIA EXPLORER</div>
@@ -47,132 +43,274 @@
     <section id="about">
       <h2>Meet the Team</h2>
       <div class="team">
-        <div class="member">
-          <img src="han_monyneak.jpg" alt="Han Monyneak">
-          <h3>Han Monyneak</h3>
-          <p>Role: Project Manager & Developer</p>
-          <p>Monyneak is responsible for the project’s coordination, ensuring everything runs smoothly and is aligned with the team's goals.</p>
+        <!-- Han Manyneak -->
+        <div class="member-card" onclick="toggleDetails(this)">
+          <div class="member-header">
+            <img src="han_monyneak.jpg" alt="Han Monyneak">
+            <div>
+              <h3>Han Monyneak</h3>
+              <p class="role">Project Manager & Developer</p>
+            </div>
+            <i class="fas fa-chevron-down expand-icon"></i>
+          </div>
+          <p class="brief">Monyneak is responsible for the project's coordination, ensuring everything runs smoothly and is aligned with the team's goals.</p>
+          <div class="details">
+            <h4>Key Responsibilities:</h4>
+            <ul>
+              <li>Project planning and timeline management</li>
+              <li>Team coordination and task delegation</li>
+              <li>Full-stack development oversight</li>
+              <li>Quality assurance and testing</li>
+            </ul>
+            <div class="contact">
+              <i class="fas fa-envelope"></i> manyneak@cambodiaexplorer.com
+            </div>
+          </div>
         </div>
-        <div class="member">
-          <img src="phorn_menly.jpg" alt="Phorn Mengly">
-          <h3>Phorn Mengly</h3>
-          <p>Role: Frontend Developer</p>
-          <p>Mengly focused on the website's interface and ensuring it is user-friendly, visually appealing, and interactive.</p>
+
+        <!-- Phorn Mengly -->
+        <div class="member-card" onclick="toggleDetails(this)">
+          <div class="member-header">
+            <img src="phorn_menly.jpg" alt="Phorn Mengly">
+            <div>
+              <h3>Phorn Mengly</h3>
+              <p class="role">Frontend Developer</p>
+            </div>
+            <i class="fas fa-chevron-down expand-icon"></i>
+          </div>
+          <p class="brief">Mengly focused on the website's interface and ensuring it is user-friendly, visually appealing, and interactive.</p>
+          <div class="details">
+            <h4>Key Responsibilities:</h4>
+            <ul>
+              <li>UI/UX design implementation</li>
+              <li>Responsive web development</li>
+              <li>Interactive element creation</li>
+              <li>Performance optimization</li>
+            </ul>
+            <div class="contact">
+              <i class="fas fa-envelope"></i> mengly@cambodiaexplorer.com
+            </div>
+          </div>
         </div>
-        <div class="member">
-          <img src="yon_panharith.jpg" alt="Yon Panharith">
-          <h3>Yon Panharith</h3>
-          <p>Role: Backend Developer</p>
-          <p>Yon works on the backend, making sure the data handling, APIs, and server-side logic are well-implemented for seamless operation.</p>
+
+        <!-- Yon Panharith -->
+        <div class="member-card" onclick="toggleDetails(this)">
+          <div class="member-header">
+            <img src="yon_panharith.jpg" alt="Yon Panharith">
+            <div>
+              <h3>Yon Panharith</h3>
+              <p class="role">Backend Developer</p>
+            </div>
+            <i class="fas fa-chevron-down expand-icon"></i>
+          </div>
+          <p class="brief">Yon works on the backend, making sure the data handling, APIs, and server-side logic are well-implemented for seamless operation.</p>
+          <div class="details">
+            <h4>Key Responsibilities:</h4>
+            <ul>
+              <li>Database design and management</li>
+              <li>API development and integration</li>
+              <li>Server configuration and maintenance</li>
+              <li>Data security implementation</li>
+            </ul>
+            <div class="contact">
+              <i class="fas fa-envelope"></i> panharith@cambodiaexplorer.com
+            </div>
+          </div>
         </div>
       </div>
+
       <h2>Meet the Mentor</h2>
       <div class="team">
-        <div class="member">
-          <img src="horm_sovanny.jpg" alt="Horm Sovanny">
-          <h3>Horm Sovanny</h3>
-          <p>Role: Mentor</p>
-          <p>Mr.Vanny provides guidance, support, and advice to the team, helping them navigate challenges and grow their skills.</p>
+        <div class="member-card" onclick="toggleDetails(this)">
+          <div class="member-header">
+            <img src="horm_sovanny.jpg" alt="Horm Sovanny">
+            <div>
+              <h3>Horm Sovanny</h3>
+              <p class="role">Mentor</p>
+            </div>
+            <i class="fas fa-chevron-down expand-icon"></i>
+          </div>
+          <p class="brief">Mr.Vanny provides guidance, support, and advice to the team, helping them navigate challenges and grow their skills.</p>
+          <div class="details">
+            <h4>Key Responsibilities:</h4>
+            <ul>
+              <li>Technical guidance and mentorship</li>
+              <li>Project strategy consulting</li>
+              <li>Team skill development</li>
+              <li>Problem-solving assistance</li>
+            </ul>
+            <div class="contact">
+              <i class="fas fa-envelope"></i> sovanny@cambodiaexplorer.com
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section id="places">
-        <h2 class="section-title">Interactive Map of Cambodia Attractions</h2>
-        <div id="map-container">
-          <label for="province-select"><b>Select a Province:</b></label>
-          <select id="province-select">
-            <option value="">-- Choose a Province --</option>
-          </select>
-          <div id="map" style="height: 500px; width: 100%;"></div>
-        </div>
-      
-        <div id="attractions-container">
-          <h2 class="section-title">Top Attractions</h2>
-          <div id="attractions-grid">
-            <!-- Top Attraction 1: Angkor Wat -->
-            <div class="attraction-card">
-              <img src="angkorwat.jpg" alt="Angkor Wat">
-              <div class="attraction-info">
-                <h3>Angkor Wat</h3>
-                <p>A UNESCO World Heritage Site and the largest religious monument in the world, Angkor Wat is a must-visit for its stunning architecture and historical significance.</p>
-              </div>
-            </div>
-      
-            <!-- Top Attraction 2: Bayon Temple -->
-            <div class="attraction-card">
-              <img src="bayontemple.jfif" alt="Bayon Temple">
-              <div class="attraction-info">
-                <h3>Bayon Temple</h3>
-                <p>Known for its massive stone faces, Bayon Temple is a highlight of the Angkor Thom complex and a symbol of Cambodia's rich history.</p>
-              </div>
-            </div>
-      
-            <!-- Top Attraction 3: Ta Prohm -->
-            <div class="attraction-card">
-              <img src="taphrom.jfif" alt="Ta Prohm">
-              <div class="attraction-info">
-                <h3>Ta Prohm</h3>
-                <p>Famous for being overgrown by jungle, Ta Prohm offers a unique blend of nature and ancient architecture, featured in the movie "Tomb Raider."</p>
-              </div>
-            </div>
-      
-            <!-- Top Attraction 4: Tonlé Sap Lake -->
-            <div class="attraction-card">
-              <img src="tonlesap.jfif" alt="Tonlé Sap Lake">
-              <div class="attraction-info">
-                <h3>Tonlé Sap Lake</h3>
-                <p>The largest freshwater lake in Southeast Asia, Tonlé Sap is home to floating villages and a vibrant ecosystem.</p>
-              </div>
-            </div>
-      
-            <!-- Top Attraction 5: Phnom Penh Royal Palace -->
-            <div class="attraction-card">
-              <img src="royalpalace.jfif" alt="Phnom Penh Royal Palace">
-              <div class="attraction-info">
-                <h3>Phnom Penh Royal Palace</h3>
-                <p>The official residence of the King of Cambodia, this palace complex is a stunning example of Khmer architecture.</p>
-              </div>
-            </div>
-            <div class="attraction-card">
-              <img src="kohrong.jpg" alt="Koh Rong">
-              <div class="attraction-info">
-                <h3>Koh Rong</h3>
-                <p>A tropical island paradise, Koh Rong is celebrated for its pristine white beaches, crystal-clear waters, and laid-back island vibe.</p>
-              </div>
-            </div>
-            <div class="attraction-card">
-              <img src="bokor.jfif" alt="Bokor National Park">
-              <div class="attraction-info">
-                <h3>Bokor National Park</h3>
-                <p>With its misty mountains, lush landscapes, and haunting French colonial remnants, Bokor National Park is a unique blend of natural beauty and historical intrigue.</p>
-              </div>
-            </div>
-            <div class="attraction-card">
-              <img src="preahvihear.jfif" alt="Preah Vihear Temple">
-              <div class="attraction-info">
-                <h3>Preah Vihear Temple</h3>
-                <p>Perched atop a dramatic cliff, Preah Vihear Temple offers breathtaking views and remarkable ancient architecture, underscoring its historical importance.</p>
-              </div>
-            </div>
-          </div>
+      <h2 class="section-title">Interactive Map of Cambodia Attractions</h2>
+      <div id="map-container">
+        <label for="province-select"><b>Select a Province:</b></label>
+        <select id="province-select">
+          <option value="">-- Choose a Province --</option>
+        </select>
+        <div id="map" style="height: 500px; width: 100%;"></div>
+        <div id="weather-container">
           <div id="weather-info"></div>
         </div>
-      </section>
+      </div>
+    
+      <div id="attractions-container">
+        <h2 class="section-title">Top Attractions</h2>
+        <div id="attractions-grid">
+          <!-- Angkor Wat -->
+          <div class="attraction-card" onclick="toggleAttraction(this)">
+            <div class="attraction-preview">
+              <img src="angkorwat.jpg" alt="Angkor Wat">
+              <h3>Angkor Wat</h3>
+            </div>
+            <div class="attraction-details">
+              <p>A UNESCO World Heritage Site and the largest religious monument in the world, Angkor Wat is a must-visit for its stunning architecture and historical significance.</p>
+              <div class="attraction-meta">
+                <span><i class="fas fa-map-marker-alt"></i> Siem Reap</span>
+                <span><i class="fas fa-star"></i> 5.0</span>
+              </div>
+              <button class="btn">Learn More</button>
+            </div>
+          </div>
 
-  <section id="contact">
-    <h2>Contact Us</h2>
-    <p>Follow us on social media for the latest updates and if you have any questions!</p>
-    <div class="social-links">
-      <a href="https://t.me/leonard_4ththeoryoftheuniverse" target="_blank" class="social-icon telegram">
-        <i class="fab fa-telegram-plane"></i>
-      </a>
-      <a href="https://www.instagram.com/leonard.the_physician/" target="_blank" class="social-icon instagram">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="https://www.facebook.com/kinryu231" target="_blank" class="social-icon facebook">
-        <i class="fab fa-facebook"></i>
-      </a>
-    </div>
-  </section>
+          <!-- Other attractions with same structure -->
+          <!-- Bayon Temple -->
+          <div class="attraction-card" onclick="toggleAttraction(this)">
+            <div class="attraction-preview">
+              <img src="bayontemple.jfif" alt="Bayon Temple">
+              <h3>Bayon Temple</h3>
+            </div>
+            <div class="attraction-details">
+              <p>Known for its massive stone faces, Bayon Temple is a highlight of the Angkor Thom complex and a symbol of Cambodia's rich history.</p>
+              <div class="attraction-meta">
+                <span><i class="fas fa-map-marker-alt"></i> Siem Reap</span>
+                <span><i class="fas fa-star"></i> 4.9</span>
+              </div>
+              <button class="btn">Learn More</button>
+            </div>
+          </div>
+
+          <!-- Ta Prohm -->
+          <div class="attraction-card" onclick="toggleAttraction(this)">
+            <div class="attraction-preview">
+              <img src="taphrom.jfif" alt="Ta Prohm">
+              <h3>Ta Prohm</h3>
+            </div>
+            <div class="attraction-details">
+              <p>Famous for being overgrown by jungle, Ta Prohm offers a unique blend of nature and ancient architecture, featured in the movie "Tomb Raider."</p>
+              <div class="attraction-meta">
+                <span><i class="fas fa-map-marker-alt"></i> Siem Reap</span>
+                <span><i class="fas fa-star"></i> 4.8</span>
+              </div>
+              <button class="btn">Learn More</button>
+            </div>
+          </div>
+
+          <!-- Tonlé Sap Lake -->
+          <div class="attraction-card" onclick="toggleAttraction(this)">
+            <div class="attraction-preview">
+              <img src="tonlesap.jfif" alt="Tonlé Sap Lake">
+              <h3>Tonlé Sap Lake</h3>
+            </div>
+            <div class="attraction-details">
+              <p>The largest freshwater lake in Southeast Asia, Tonlé Sap is home to floating villages and a vibrant ecosystem.</p>
+              <div class="attraction-meta">
+                <span><i class="fas fa-map-marker-alt"></i> Siem Reap Province</span>
+                <span><i class="fas fa-star"></i> 4.7</span>
+              </div>
+              <button class="btn">Learn More</button>
+            </div>
+          </div>
+
+          <!-- Phnom Penh Royal Palace -->
+          <div class="attraction-card" onclick="toggleAttraction(this)">
+            <div class="attraction-preview">
+              <img src="royalpalace.jfif" alt="Phnom Penh Royal Palace">
+              <h3>Phnom Penh Royal Palace</h3>
+            </div>
+            <div class="attraction-details">
+              <p>The official residence of the King of Cambodia, this palace complex is a stunning example of Khmer architecture.</p>
+              <div class="attraction-meta">
+                <span><i class="fas fa-map-marker-alt"></i> Phnom Penh</span>
+                <span><i class="fas fa-star"></i> 4.6</span>
+              </div>
+              <button class="btn">Learn More</button>
+            </div>
+          </div>
+
+          <!-- Koh Rong -->
+          <div class="attraction-card" onclick="toggleAttraction(this)">
+            <div class="attraction-preview">
+              <img src="kohrong.jpg" alt="Koh Rong">
+              <h3>Koh Rong</h3>
+            </div>
+            <div class="attraction-details">
+              <p>A tropical island paradise, Koh Rong is celebrated for its pristine white beaches, crystal-clear waters, and laid-back island vibe.</p>
+              <div class="attraction-meta">
+                <span><i class="fas fa-map-marker-alt"></i> Sihanoukville</span>
+                <span><i class="fas fa-star"></i> 4.8</span>
+              </div>
+              <button class="btn">Learn More</button>
+            </div>
+          </div>
+
+          <!-- Bokor National Park -->
+          <div class="attraction-card" onclick="toggleAttraction(this)">
+            <div class="attraction-preview">
+              <img src="bokor.jfif" alt="Bokor National Park">
+              <h3>Bokor National Park</h3>
+            </div>
+            <div class="attraction-details">
+              <p>With its misty mountains, lush landscapes, and haunting French colonial remnants, Bokor National Park is a unique blend of natural beauty and historical intrigue.</p>
+              <div class="attraction-meta">
+                <span><i class="fas fa-map-marker-alt"></i> Kampot</span>
+                <span><i class="fas fa-star"></i> 4.5</span>
+              </div>
+              <button class="btn">Learn More</button>
+            </div>
+          </div>
+
+          <!-- Preah Vihear Temple -->
+          <div class="attraction-card" onclick="toggleAttraction(this)">
+            <div class="attraction-preview">
+              <img src="preahvihear.jfif" alt="Preah Vihear Temple">
+              <h3>Preah Vihear Temple</h3>
+            </div>
+            <div class="attraction-details">
+              <p>Perched atop a dramatic cliff, Preah Vihear Temple offers breathtaking views and remarkable ancient architecture, underscoring its historical importance.</p>
+              <div class="attraction-meta">
+                <span><i class="fas fa-map-marker-alt"></i> Preah Vihear</span>
+                <span><i class="fas fa-star"></i> 4.7</span>
+              </div>
+              <button class="btn">Learn More</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <p>Follow us on social media for the latest updates and if you have any questions!</p>
+      <div class="social-links">
+        <a href="https://t.me/leonard_4ththeoryoftheuniverse" target="_blank" class="social-icon telegram">
+          <i class="fab fa-telegram-plane"></i>
+        </a>
+        <a href="https://www.instagram.com/leonard.the_physician/" target="_blank" class="social-icon instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.facebook.com/kinryu231" target="_blank" class="social-icon facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </div>
+    </section>
+  </main>
 
   <footer>
     <marquee behavior="scroll" direction="left" scrollamount="5">
@@ -180,36 +318,55 @@
     </marquee>
   </footer>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const darkModeToggle = document.getElementById('dark-mode-toggle');
-      const body = document.body;
-
-      // Check for saved dark mode preference in localStorage
-      const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
-
-      // Apply dark mode if previously enabled
-      if (isDarkMode) {
-        body.classList.add('dark-mode');
-        darkModeToggle.textContent = '☀️'; // Change to sun icon
-      }
-
-      // Toggle dark mode on button click
-      darkModeToggle.addEventListener('click', function() {
-        body.classList.toggle('dark-mode');
-        const isDarkModeEnabled = body.classList.contains('dark-mode');
-
-        // Save preference to localStorage
-        if (isDarkModeEnabled) {
-          localStorage.setItem('darkMode', 'enabled');
-          darkModeToggle.textContent = '☀️'; // Change to sun icon
-        } else {
-          localStorage.setItem('darkMode', 'disabled');
-          darkModeToggle.textContent = '🌙'; // Change to moon icon
+    // Toggle team member details
+    function toggleDetails(card) {
+      // Close other open cards first
+      const allCards = document.querySelectorAll('.member-card');
+      allCards.forEach(otherCard => {
+        if (otherCard !== card && otherCard.classList.contains('active')) {
+          otherCard.classList.remove('active');
+          const otherIcon = otherCard.querySelector('.expand-icon');
+          otherIcon.classList.replace('fa-chevron-up', 'fa-chevron-down');
         }
       });
-    });
-  </script>
 
+      // Toggle current card
+      card.classList.toggle('active');
+      const icon = card.querySelector('.expand-icon');
+      icon.classList.toggle('fa-chevron-down');
+      icon.classList.toggle('fa-chevron-up');
+    }
+
+    // Toggle attraction details
+    function toggleAttraction(card) {
+      // Close other open cards first
+      const allAttractions = document.querySelectorAll('.attraction-card');
+      allAttractions.forEach(otherCard => {
+        if (otherCard !== card && otherCard.classList.contains('active')) {
+          otherCard.classList.remove('active');
+        }
+      });
+
+      // Toggle current card
+      card.classList.toggle('active');
+    }
+
+    // Dark mode toggle
+    document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      
+      // Save preference to localStorage
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      localStorage.setItem('darkMode', isDarkMode);
+    });
+
+    // Check for saved dark mode preference
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+  </script>
 </body>
 </html>
