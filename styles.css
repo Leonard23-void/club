@@ -1,376 +1,683 @@
 :root {
-    --primary: #007bff;
-    --secondary: #ffcc00;
-    --dark-bg: #121212;
-    --light-bg: #ffffff;
-    --text-dark: #121212;
-    --text-light: #ffffff;
-    --gradient-1: linear-gradient(45deg, var(--primary), #0056b3);
-    --gradient-2: linear-gradient(45deg, #ffcc00, #ffaa00);
-    --gradient-3: linear-gradient(45deg, #ff416c, #ff4b2b);
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
-    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.16);
-    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.19);
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-  }
-  
-  /* Modern Reset */
-  *, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 80px;
-  }
-  
-  body {
-    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-    background: var(--light-bg);
-    color: var(--text-dark);
-    line-height: 1.6;
-    transition: var(--transition);
-  }
-  
-  .dark-mode {
-    --light-bg: var(--dark-bg);
-    --text-dark: var(--text-light);
-    background: var(--dark-bg);
-    color: var(--text-light);
-  }
-  
-  /* Modern Navbar */
+  --primary: #007bff;
+  --secondary: #ffcc00;
+  --dark-bg: #121212;
+  --light-bg: #ffffff;
+  --text-dark: #121212;
+  --text-light: #ffffff;
+  --gradient-1: linear-gradient(45deg, var(--primary), #0056b3);
+  --gradient-2: linear-gradient(45deg, #ffcc00, #ffaa00);
+  --gradient-3: linear-gradient(45deg, #ff416c, #ff4b2b);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.16);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.19);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --weather-card-bg: rgba(255, 255, 255, 0.15);
+}
+
+/* Modern Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  background: var(--light-bg);
+  color: var(--text-dark);
+  line-height: 1.6;
+  transition: var(--transition);
+}
+
+.dark-mode {
+  --light-bg: var(--dark-bg);
+  --text-dark: var(--text-light);
+  --weather-card-bg: rgba(30, 30, 30, 0.7);
+  background: var(--dark-bg);
+  color: var(--text-light);
+}
+
+/* ========== WEATHER WIDGET STYLES ========== */
+#weather-info {
+  margin: 2rem auto;
+  max-width: 600px;
+  background: var(--weather-card-bg);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--glass-border);
+  transition: var(--transition);
+  overflow: hidden;
+  position: relative;
+}
+
+#weather-info::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: var(--gradient-1);
+  opacity: 0.15;
+  z-index: -1;
+  animation: gradient-shift 15s ease infinite;
+  background-size: 200% 200%;
+}
+
+.weather-card {
+  text-align: center;
+  color: var(--text-dark);
+}
+
+.weather-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+
+.weather-icon {
+  width: 100px;
+  height: 100px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  animation: float 4s ease-in-out infinite;
+}
+
+.weather-details {
+  text-align: left;
+  flex: 1;
+  min-width: 200px;
+}
+
+.temperature {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0.5rem 0;
+  background: var(--gradient-2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+}
+
+.conditions {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-transform: capitalize;
+}
+
+.detail-label {
+  font-weight: 600;
+  display: inline-block;
+  min-width: 90px;
+  color: var(--secondary);
+}
+
+.weather-error {
+  padding: 1rem;
+  background: rgba(255, 0, 0, 0.1);
+  border-radius: 8px;
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+/* Weather condition specific colors */
+.weather-card[data-condition*="cloud"] {
+  --weather-accent: #94a3b8;
+}
+
+.weather-card[data-condition*="rain"] {
+  --weather-accent: #60a5fa;
+}
+
+.weather-card[data-condition*="clear"] {
+  --weather-accent: #fbbf24;
+}
+
+.weather-card[data-condition*="snow"] {
+  --weather-accent: #bfdbfe;
+}
+
+/* Modern Navbar */
+.navbar {
+  --navbar-height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--navbar-height);
+  padding: 0 2rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.navbar .logo {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 800;
+  background: var(--gradient-2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  position: relative;
+  padding: 0.5rem 1rem;
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--secondary);
+  transition: var(--transition);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+#dark-mode-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-dark);
+  transition: var(--transition);
+}
+
+#dark-mode-toggle:hover {
+  color: var(--secondary);
+}
+
+/* Hero Section with Glassmorphism */
+#home {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+#home::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4)),
+    url('angkorwat.jpg') center/cover fixed;
+  z-index: -1;
+}
+
+.overlay {
+  max-width: min(90%, 800px);
+  padding: 2rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.overlay h1 {
+  font-size: clamp(2rem, 8vw, 4rem);
+  margin-bottom: 1rem;
+  background: var(--gradient-2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.overlay p {
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  margin-bottom: 2rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: var(--gradient-2);
+  border: none;
+  border-radius: 50px;
+  color: var(--text-dark);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  transform-origin: center;
+}
+
+.btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+/* Enhanced Team Section with Interactive Cards */
+.team {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 4rem 2rem;
+  flex-wrap: wrap;
+}
+
+.member-card {
+  text-align: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 280px;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.member-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.member-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.member-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--primary);
+  transition: var(--transition);
+}
+
+.member-card:hover img {
+  border-color: var(--secondary);
+}
+
+.member-card h3 {
+  font-size: 1.3rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.role {
+  color: var(--secondary);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.brief {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+  text-align: left;
+}
+
+.member-card.active .details {
+  max-height: 500px;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.details h4 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.details ul {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.details li {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.expand-icon {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.5rem;
+  color: var(--text-dark);
+  transition: var(--transition);
+}
+
+/* Enhanced Attractions Grid with Interactive Cards */
+#attractions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.attraction-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  position: relative;
+}
+
+.attraction-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.attraction-preview {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.attraction-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.attraction-card:hover img {
+  transform: scale(1.03);
+}
+
+.attraction-preview h3 {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.3rem;
+}
+
+.attraction-details {
+  padding: 0 1.5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+.attraction-card.active .attraction-details {
+  max-height: 500px;
+  padding: 0 1.5rem 1.5rem;
+}
+
+.attraction-details p {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.attraction-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: var(--secondary);
+}
+
+/* Modern Form Elements */
+#province-select {
+  appearance: none;
+  background: var(--light-bg);
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: inherit;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.5em;
+}
+
+/* Section Titles */
+.section-title {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 2.5rem;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Marquee Styling */
+marquee {
+  padding: 0.5rem 0;
+  margin: 1rem 0;
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+/* Map Container */
+#map-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#weather-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Contact Section */
+#contact {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+/* Modern Social Links */
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.social-icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  transition: var(--transition);
+  border: 1px solid var(--glass-border);
+}
+
+.social-icon:hover {
+  background: var(--secondary);
+  transform: translateY(-3px);
+}
+
+/* Footer */
+footer {
+  padding: 1rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--glass-border);
+}
+
+/* Advanced Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes weatherFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.weather-card {
+  animation: weatherFadeIn 0.5s ease-out;
+}
+
+/* Dark mode specific styles */
+.dark-mode .member-card,
+.dark-mode .attraction-card {
+  background: rgba(30, 30, 30, 0.7);
+}
+
+.dark-mode .brief,
+.dark-mode .attraction-details p,
+.dark-mode .details li {
+  color: var(--text-light);
+}
+
+/* Modern Responsive Design */
+@media (max-width: 768px) {
   .navbar {
-    --navbar-height: 80px;
-    display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    height: var(--navbar-height);
-    padding: 0 2rem;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    box-shadow: var(--shadow-md);
-    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem;
+    gap: 1rem;
   }
-  
-  .navbar .logo {
-    font-size: clamp(1.5rem, 5vw, 2rem);
-    font-weight: 800;
-    background: var(--gradient-2);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  
+
   .nav-links {
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
-  }
-  
-  .nav-links a {
-    position: relative;
-    padding: 0.5rem 1rem;
-    color: inherit;
-    text-decoration: none;
-    transition: var(--transition);
-  }
-  
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: var(--secondary);
-    transition: var(--transition);
-  }
-  
-  .nav-links a:hover::after {
-    width: 100%;
-    left: 0;
-  }
-  
-  #dark-mode-toggle {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--text-dark);
-    transition: var(--transition);
-  }
-  
-  #dark-mode-toggle:hover {
-    color: var(--secondary);
-  }
-  
-  /* Hero Section with Glassmorphism */
-  #home {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-  }
-  .scrolling-text-container {
-    width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    background-color: #f0f0f0;
-    padding: 10px 0;
-  }
-  
-  #home::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(45deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4)),
-      url('angkorwat.jpg') center/cover fixed;
-    z-index: -1;
-  }
-  
-  .overlay {
-    max-width: min(90%, 800px);
-    padding: 2rem;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border-radius: 16px;
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--shadow-lg);
-    text-align: center;
-  }
-  
-  .overlay h1 {
-    font-size: clamp(2rem, 8vw, 4rem);
-    margin-bottom: 1rem;
-    background: var(--gradient-2);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  
-  .overlay p {
-    font-size: clamp(1rem, 3vw, 1.2rem);
-    margin-bottom: 2rem;
-  }
-  
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 2rem;
-    background: var(--gradient-2);
-    border: none;
-    border-radius: 50px;
-    color: var(--text-dark);
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    transform-origin: center;
-  }
-  
-  .btn:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: var(--shadow-md);
-  }
-  
-  /* Team Section with Glassmorphism */
-  .team {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding: 4rem 2rem;
     flex-wrap: wrap;
-  }
-  
-  .member {
-    text-align: center;
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 1.5rem;
-    max-width: 250px;
-    box-shadow: var(--shadow-md);
-    transition: var(--transition);
-    border: 1px solid var(--glass-border);
-  }
-  
-  .member:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-  }
-  
-  .member img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 4px solid var(--primary);
-    transition: var(--transition);
-  }
-  
-  .member:hover img {
-    border-color: var(--secondary);
-  }
-  
-  .member h3 {
-    font-size: 1.2rem;
-    margin-top: 0.75rem;
-  }
-  
-  .member p {
-    font-size: 0.9rem;
-    color: var(--text-dark);
-  }
-  
-  /* Attractions Grid */
-  #attractions-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    padding: 2rem;
-  }
-  
-  .attraction-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 1.5rem;
-    text-align: center;
-    box-shadow: var(--shadow-md);
-    transition: var(--transition);
-    border: 1px solid var(--glass-border);
-  }
-  
-  .attraction-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-  }
-  
-  .attraction-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  .attraction-info h3 {
-    margin-top: 0.75rem;
-    font-size: 1.2rem;
-  }
-  
-  .attraction-info p {
-    font-size: 0.9rem;
-    color: var(--text-dark);
-  }
-  
-  /* Modern Form Elements */
-  #province-select {
-    appearance: none;
-    background: var(--light-bg);
-    border: 2px solid var(--primary);
-    border-radius: 8px;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    color: inherit;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1.5em;
-  }
-  
-  /* Modern Social Links */
-  .social-links {
-    display: flex;
-    gap: 1.5rem;
     justify-content: center;
   }
-  
-  .social-icon {
-    display: grid;
-    place-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    transition: var(--transition);
-    border: 1px solid var(--glass-border);
+
+  #home::before {
+    background-attachment: scroll;
+  }
+
+  .weather-content {
+    flex-direction: column;
+    text-align: center;
   }
   
-  .social-icon:hover {
-    background: var(--secondary);
-    transform: translateY(-3px);
+  .weather-details {
+    text-align: center;
   }
   
-  /* Advanced Animations */
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+  .temperature {
+    font-size: 2.5rem;
   }
   
-  @keyframes gradient-shift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  .detail-label {
+    min-width: auto;
+    margin-right: 0.5rem;
   }
-  
-  /* Modern Responsive Design */
-  @media (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem;
-      gap: 1rem;
-    }
-  
-    .nav-links {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-  
-    #home::before {
-      background-attachment: scroll;
-    }
+
+  .member-card, 
+  .attraction-card {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 1.5rem;
   }
-  
-  /* Utility Classes */
-  .container {
-    width: min(1200px, 90%);
-    margin: 0 auto;
+
+  #attractions-grid {
+    grid-template-columns: 1fr;
   }
-  
-  .section {
-    padding: 6rem 0;
-  }
-  
-  .text-gradient {
-    background: var(--gradient-2);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  
-  /* Scroll Animations */
-  [data-animate] {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: var(--transition);
-  }
-  
-  [data-animate="visible"] {
-    opacity: 1;
-    transform: translateY(0);
-  }
+}
+
+/* Utility Classes */
+.container {
+  width: min(1200px, 90%);
+  margin: 0 auto;
+}
+
+.section {
+  padding: 6rem 0;
+}
+
+.text-gradient {
+  background: var(--gradient-2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Scroll Animations */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: var(--transition);
+}
+
+[data-animate="visible"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Dark mode transition */
+body {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Accessibility focus styles */
+a:focus, button:focus {
+  outline: 2px solid var(--secondary);
+  outline-offset: 3px;
+}
